@@ -1,6 +1,8 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useLayout } from '../contexts/LayoutContext';
+import { motion } from "framer-motion";
 
 const fetchReleaseDetails = async (id) => {
   // Simulating API call
@@ -18,12 +20,13 @@ const ReleaseDetails = () => {
     queryKey: ["release", id],
     queryFn: () => fetchReleaseDetails(id),
   });
+  const { isCreativeLayout } = useLayout();
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error fetching release details</div>;
   if (!release) return <div>Release not found</div>;
 
-  return (
+  const standardLayout = (
     <div className="container mx-auto py-8">
       <Card>
         <CardHeader>
@@ -38,6 +41,55 @@ const ReleaseDetails = () => {
       </Card>
     </div>
   );
+
+  const creativeLayout = (
+    <div className="container mx-auto py-16 px-4">
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="max-w-3xl mx-auto"
+      >
+        <h1 className="text-6xl font-bold mb-8 transform -rotate-3">{release.name}</h1>
+        <div className="bg-black text-white p-8 transform rotate-2">
+          <motion.p
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="text-3xl mb-4"
+          >
+            {release.brand}
+          </motion.p>
+          <motion.p
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+            className="text-2xl mb-4"
+          >
+            Release Date: {release.date}
+          </motion.p>
+          <motion.p
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.5 }}
+            className="text-2xl mb-6"
+          >
+            Price: {release.price}
+          </motion.p>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8, duration: 0.5 }}
+            className="text-lg"
+          >
+            {release.description}
+          </motion.p>
+        </div>
+      </motion.div>
+    </div>
+  );
+
+  return isCreativeLayout ? creativeLayout : standardLayout;
 };
 
 export default ReleaseDetails;

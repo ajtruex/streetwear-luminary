@@ -9,21 +9,7 @@ import LayoutToggle from "./components/LayoutToggle";
 const queryClient = new QueryClient();
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <LayoutProvider>
-      <TooltipProvider>
-        <Toaster />
-        <BrowserRouter>
-          <LayoutToggle />
-          <Routes>
-            {navItems.map(({ to, page }) => (
-              <Route key={to} path={to} element={page} />
-            ))}
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </LayoutProvider>
-  </QueryClientProvider>
+
 );
 
 export default App;

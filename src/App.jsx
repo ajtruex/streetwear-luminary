@@ -14,7 +14,7 @@ const App = () => (
       <TooltipProvider>
         <Toaster />
         <BrowserRouter>
-          <LayoutToggle />
+{/*           <LayoutToggle /> */}
           <Routes>
             {navItems.map(({ to, page }) => (
               <Route key={to} path={to} element={page} />
